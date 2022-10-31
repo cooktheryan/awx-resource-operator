@@ -1,4 +1,17 @@
 ---
+- name: Read AnsibleProject Specs
+  k8s_info:
+    api_version: tower.ansible.com/v1alpha1
+    kind: AnsibleProject
+    name: "{{ lookup('env', 'ANSIBLEPROJECT_NAME') }}"
+    namespace: "{{ lookup('env', 'ANSIBLEPROJECT_NAMESPACE') }}"
+  register: project
+
+- name: Launch Project
+  include_tasks: launch_project.yml
+  when:
+    - lookup('env','PROJECT_NAME') is defined
+    - lookup('env','PROJECT_NAME') != ''
 
 - name: Read AnsibleJob Specs
   k8s_info:
