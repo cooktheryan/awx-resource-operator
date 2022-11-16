@@ -24,19 +24,21 @@ spec:
                 secretKeyRef:
                   name: "{{ tower_auth_secret }}"
                   key: host
-{% if job_template_name is defined and job_template_name != "" %}
-            - name: TOWER_JOB_TEMPLATE_NAME
-              value: "{{ job_template_name }}"
-{% endif %}
-{% if workflow_template_name is defined and workflow_template_name != "" %}
-            - name: TOWER_WORKFLOW_TEMPLATE_NAME
-              value: "{{ workflow_template_name }}"
-{% endif %}
+            - name: PROJECT_NAME
+              value: "{{ project_name }}"
+            - name: PROJECT_ORGANIZATION
+              value: "{{ project_organization }}"
+            - name: PROJECT_DESCRIPTION
+              value: "{{ project_description }}"
+            - name: PROJECT_REPO
+              value: "{{ project_repo }}"
+            - name: PROJECT_BRANCH
+              value: "{{ project_branch }}"
             - name: TOWER_VERIFY_SSL
               value: "False"
-            - name: ANSIBLEJOB_NAME
+            - name: ANSIBLEPROJECT_NAME
               value: "{{ ansible_operator_meta.name }}"
-            - name: ANSIBLEJOB_NAMESPACE
+            - name: ANSIBLEPROJECT_NAMESPACE
               value: "{{ ansible_operator_meta.namespace }}"
       restartPolicy: Never
   backoffLimit: {{ backoff_limit }}

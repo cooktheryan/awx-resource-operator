@@ -1,9 +1,8 @@
 ---
-
-- name: Assert JT or WFJT defined
+- name: Assert project defined
   assert:
     that:
-      - (job_template_name | default('') | length) or (workflow_template_name | default('') | length)
+      - (project_name | default('') | length)
 
 - name: Read K8s job info
   k8s_info:
@@ -13,10 +12,10 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
   register: k8s_job
 
-- name: Update AnsibleJob isFinished status if job succeeded
+- name: Update AnsibleProject isFinished status if job succeeded
   k8s_status:
     api_version: tower.ansible.com/v1alpha1
-    kind: AnsibleJob
+    kind: AnsibleProject
     name: "{{ ansible_operator_meta.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     status:
@@ -25,15 +24,15 @@
     - k8s_job['resources'][0]['status']['succeeded'] is defined
     - k8s_job['resources'][0]['status']['succeeded'] == 1
 
-- name: Read AnsibleJob info
+- name: Read AnsibleProject info
   k8s_info:
     api_version: tower.ansible.com/v1alpha1
-    kind: AnsibleJob
+    kind: AnsibleProject
     name: "{{ ansible_operator_meta.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
   register: ansiblejob_info
 
-- name: End play early is AnsibleJob has already finished
+- name: End play early is AnsibleProject has already finished
   meta: end_play
   when:
     - ansiblejob_info['resources'][0]['status']['isFinished'] is defined
@@ -48,10 +47,10 @@
       set_fact:
         _failures_allowed: "{{ backoff_limit }} + 1"
 
-    - name: Update AnsibleJob status if backoff limit is exceeded
+    - name: Update AnsibleProject status if backoff limit is exceeded
       k8s_status:
         api_version: tower.ansible.com/v1alpha1
-        kind: AnsibleJob
+        kind: AnsibleProject
         name: "{{ ansible_operator_meta.name }}"
         namespace: "{{ ansible_operator_meta.namespace }}"
         status:
@@ -60,10 +59,10 @@
       when:
         - _attempts >= _failures_allowed
 
-    - name: Update AnsibleJob status with message
+    - name: Update AnsibleProject status with message
       k8s_status:
         api_version: tower.ansible.com/v1alpha1
-        kind: AnsibleJob
+        kind: AnsibleProject
         name: "{{ ansible_operator_meta.name }}"
         namespace: "{{ ansible_operator_meta.namespace }}"
         status:
@@ -113,14 +112,14 @@
     state: present
     definition: "{{ lookup('template', 'job_definition.yml.j2') }}"
 
-- name: Set Job or WFJT name
+- name: Set project name
   set_fact:
-    _job_name: "{{ job_template_name |  default(workflow_template_name)}}"
+    _project_name: "{{ project_name}}"
 
-- name: Update AnsibleJob status with K8s job info
+- name: Update AnsibleProject status with K8s job info
   k8s_status:
     api_version: tower.ansible.com/v1alpha1
-    kind: AnsibleJob
+    kind: AnsibleProject
     name: "{{ ansible_operator_meta.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     status:
@@ -135,5 +134,5 @@
         env:
           inventory: "{{ inventory | default(omit) }}"
           secretNamespacedName: "{{ ansible_operator_meta.namespace+'/'+tower_auth_secret }}"
-          templateName: "{{ _job_name }}"
+          projectName: "{{ _project_name }}"
           verifySSL: false

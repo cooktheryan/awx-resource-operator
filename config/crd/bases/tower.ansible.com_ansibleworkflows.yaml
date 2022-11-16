@@ -2,20 +2,20 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: ansiblejobs.tower.ansible.com
+  name: ansibleworkflows.tower.ansible.com
 spec:
   group: tower.ansible.com
   names:
-    kind: AnsibleJob
-    listKind: AnsibleJobList
-    plural: ansiblejobs
-    singular: ansiblejob
+    kind: AnsibleWorkflow
+    listKind: AnsibleWorkflowList
+    plural: ansibleworkflows
+    singular: ansibleworkflow
   scope: Namespaced
   versions:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: AnsibleJob is the Schema for the ansiblejobs API
+        description: AnsibleWorkflow is the Schema for the ansibleworkflows API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -36,8 +36,6 @@ spec:
                 x-kubernetes-preserve-unknown-fields: true
               inventory:
                 type: string
-              job_template_name:
-                type: string
               workflow_template_name:
                 type: string
               runner_image:
@@ -53,22 +51,13 @@ spec:
                 type: string
                 description: |
                   A k8s secret that contains an access token for AWX. To create an access token see these docs: https://docs.ansible.com/automation-controller/4.1.0/html/userguide/applications_auth.html#add-tokens.
-              job_ttl:
-                description: Time to live for k8s job object after the playbook run has finished
-                type: integer
-              job_tags:
-                type: string
-                description: A comma-separated list of tags to specify which sets of ansible tasks in a job should be run
-              skip_tags:
-                type: string
-                description: A comma-separated list of tags to specify which sets of ansible tasks in a job should not be run
             required:
             - tower_auth_secret
-            description: Spec defines the desired state of AnsibleJob
+            description: Spec defines the desired state of AnsibleWorkflow
             type: object
             x-kubernetes-preserve-unknown-fields: true
           status:
-            description: Status defines the observed state of AnsibleJob
+            description: Status defines the observed state of AnsibleWorkflow
             type: object
             x-kubernetes-preserve-unknown-fields: true
         type: object
