@@ -13,7 +13,7 @@ env:
   GO_VERSION: "1.17"
   OPERATOR_IMAGE: "quay.io/ansible/awx-resource-operator:ci"
   RUNNER_IMAGE: "quay.io/ansible/awx-resource-runner:ci"
-  TOKEN_IMAGE: "quay.io/ansible/token-playbook:ci"
+  TOKEN_IMAGE: "quay.io/ansible/token-playbook:latest"
 
 jobs:
   image-build:
