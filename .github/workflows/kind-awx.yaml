@@ -23,22 +23,22 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build operator container
-        run: podman build -t ${{ env.OPERATOR_IMAGE }}:ci .
+        run: podman build -t ${{ env.OPERATOR_IMAGE }} .
 
       - name: Build runner container
-        run: podman build -f Dockerfile.runner -t ${{ env.RUNNER_IMAGE }}:ci
+        run: podman build -f Dockerfile.runner -t ${{ env.RUNNER_IMAGE }}
 
       - name: Build token generator
-        run: cd test-e2e/token-container && podman build . --tag ${{ env.TOKEN_IMAGE }}:ci
+        run: cd test-e2e/token-container && podman build . --tag ${{ env.TOKEN_IMAGE }}
 
       - name: archive operator image
-        run: podman save ${OPERATOR_IMAGE}:ci > operator.tar
+        run: podman save ${OPERATOR_IMAGE} > operator.tar
 
       - name: archive runner image
-        run: podman save ${RUNNER_IMAGE}:ci > runner.tar
+        run: podman save ${RUNNER_IMAGE} > runner.tar
 
       - name: archive token image
-        run: podman save ${TOKEN_IMAGE}:ci > token.tar
+        run: podman save ${TOKEN_IMAGE} > token.tar
 
       - name: upload operator image
         uses: actions/upload-artifact@v3
@@ -104,7 +104,7 @@ jobs:
           kind load image-archive /tmp/operator.tar
           kind load image-archive /tmp/runner.tar
           kind load image-archive /tmp/token.tar
-          NAMESPACE=awx IMG=${OPERATOR_IMAGE}:ci make deploy
+          NAMESPACE=awx IMG=${OPERATOR_IMAGE} make deploy
 
       - name: record the ci release of awx-operator
         run: |
