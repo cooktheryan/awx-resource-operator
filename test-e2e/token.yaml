@@ -51,7 +51,7 @@ spec:
       containers:
         - name: token
           imagePullPolicy: IfNotPresent
-          image: quay.io/ansible/token-playbook:latest
+          image: quay.io/ansible/token-playbook:ci
           command: ["/usr/local/bin/ansible-playbook", "/runner/playbook.yaml"]
           env:
             - name: ADMIN
