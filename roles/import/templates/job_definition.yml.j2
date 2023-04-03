@@ -17,6 +17,8 @@ spec:
             - name: importfile
               mountPath: /opt/import
           env:
+            - name: IMPORT_NAME
+              value: "{{ import_name }}"
             - name: TOWER_OAUTH_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -29,9 +31,9 @@ spec:
                   key: host
             - name: TOWER_VERIFY_SSL
               value: "False"
-            - name: IMPORT_NAME
+            - name: ANSIBLEIMPORT_NAME
               value: "{{ ansible_operator_meta.name }}"
-            - name: IMPORT_NAMESPACE
+            - name: ANSIBLEIMPORT_NAMESPACE
               value: "{{ ansible_operator_meta.namespace }}"
       volumes:
         - name: importfile
