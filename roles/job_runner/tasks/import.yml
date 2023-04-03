@@ -1,8 +1,8 @@
 - name: Define a Import, if error update AnsibleImport status then end play
   block:
     - name: Launch Import
-      awx.awx.Import:
-        name: "{{ lookup('env','IMPORT_NAME') }}"
+      awx.awx.import:
+        assets: "{{ lookup('file', 'import_me.yaml') | from_yaml() }}"
       register: Import
 
   rescue:
