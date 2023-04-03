@@ -30,6 +30,23 @@ spec:
           metadata:
             type: object
           spec:
+            properties:
+              import_name:
+                type: string
+                description: Name of the import to be created
+              configmap:
+                type: string
+              runner_image:
+                type: string
+                description: Runner image used when running jobs
+              runner_version:
+                type: string
+                description: Runner image version used when running jobs
+              runner_pull_policy:
+                type: string
+                description: Runner image pull policy used when running jobs
+            required:
+            - configmap
             description: Spec defines the desired state of AnsibleImport
             type: object
             x-kubernetes-preserve-unknown-fields: true
