@@ -2,7 +2,7 @@
   block:
     - name: Launch Import
       awx.awx.import:
-        assets: "{{ lookup('file', 'import_me.yaml') | from_yaml() }}"
+        assets: "{{ lookup('file', '/opt/import/import_me.yaml') | from_yaml() }}"
       register: Import
 
   rescue:
