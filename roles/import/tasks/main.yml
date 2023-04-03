@@ -75,7 +75,7 @@
 
 - name: Set Import name
   set_fact:
-    _Import_name: "{{ Import_name}}"
+    _import_name: "{{ import_name}}"
 
 - name: Update AnsibleImport status with K8s job info
   operator_sdk.util.k8s_status:
@@ -95,5 +95,5 @@
         env:
           inventory: "{{ inventory | default(omit) }}"
           secretNamespacedName: "{{ ansible_operator_meta.namespace+'/'+tower_auth_secret }}"
-          ImportName: "{{ _Import_name }}"
+          ImportName: "{{ _import_name }}"
           verifySSL: false
