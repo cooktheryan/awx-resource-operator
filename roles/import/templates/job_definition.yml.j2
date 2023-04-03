@@ -14,7 +14,7 @@ spec:
           image: "{{ _runner_image }}"
           imagePullPolicy: "{{ _runner_pull_policy }}"
           volumeMounts:
-            - name: importConfigMap
+            - name: importfile
               mountPath: /opt/import
           env:
             - name: TOWER_OAUTH_TOKEN
@@ -34,7 +34,7 @@ spec:
             - name: IMPORT_NAMESPACE
               value: "{{ ansible_operator_meta.namespace }}"
       volumes:
-        - name: importConfigMap
+        - name: importfile
           configMap:
             name: "{{ configmap }}"
       restartPolicy: Never
