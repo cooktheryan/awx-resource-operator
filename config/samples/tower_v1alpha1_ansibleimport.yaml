@@ -1,12 +1,9 @@
 apiVersion: tower.ansible.com/v1alpha1
 kind: AnsibleImport
 metadata:
-  labels:
-    app.kubernetes.io/name: ansibleimport
-    app.kubernetes.io/instance: ansibleimport-sample
-    app.kubernetes.io/part-of: awx-resource-operator
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: awx-resource-operator
   name: ansibleimport-sample
 spec:
-  # TODO(user): Add fields here
+  configmap: importcm
+  import_name: fix
+  tower_auth_secret: awxaccess
+  runner_pull_policy: IfNotPresent
